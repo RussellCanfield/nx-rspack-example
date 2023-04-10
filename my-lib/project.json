@@ -1,0 +1,72 @@
+{
+  "name": "my-lib",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "./my-lib/src",
+  "targets": {
+    "build-lib": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "copyfiles -f ./my-lib/package.json ./my-lib/dist",
+          "tsc --project ./my-lib/tsconfig.lib.json --outDir ./my-lib/dist --emitDeclarationOnly"
+        ],
+        "parallel": true
+      },
+      "dependsOn": ["build", "copy-proj"]
+    },
+    "copy-proj": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --project ./my-lib/tsconfig.lib.json --outDir ./my-lib/dist --emitDeclarationOnly"
+        ],
+        "parallel": false
+      },
+      "dependsOn": ["build"]
+    },
+    "build": {
+      "executor": "@nrwl/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "web",
+        "outputPath": "my-lib/dist",
+        "main": "my-lib/src/index.ts",
+        "tsConfig": "my-lib/tsconfig.lib.json",
+        "rspackConfig": "my-lib/rspack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "my-lib/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["./my-lib/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

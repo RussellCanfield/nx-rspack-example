@@ -1,0 +1,10 @@
+{
+  "name": "my-lib",
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "types": "./src/index.d.ts"
+}
