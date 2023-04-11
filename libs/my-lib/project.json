@@ -4,37 +4,37 @@
   "projectType": "application",
   "sourceRoot": "./my-lib/src",
   "targets": {
-    "build-lib": {
+    "build": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "copyfiles -f ./my-lib/package.json ./my-lib/dist",
-          "tsc --project ./my-lib/tsconfig.lib.json --outDir ./my-lib/dist --emitDeclarationOnly"
+          "copyfiles -f ./libs/my-lib/package.json ./libs/my-lib/dist",
+          "tsc --project ./libs/my-lib/tsconfig.lib.json --outDir ./libs/my-lib/dist --emitDeclarationOnly"
         ],
         "parallel": true
       },
-      "dependsOn": ["build", "copy-proj"]
+      "dependsOn": ["nx-build", "copy-proj"]
     },
     "copy-proj": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "tsc --project ./my-lib/tsconfig.lib.json --outDir ./my-lib/dist --emitDeclarationOnly"
+          "tsc --project ./libs/my-lib/tsconfig.lib.json --outDir ./libs/my-lib/dist --emitDeclarationOnly"
         ],
         "parallel": false
       },
-      "dependsOn": ["build"]
+      "dependsOn": ["nx-build"]
     },
-    "build": {
+    "nx-build": {
       "executor": "@nrwl/rspack:rspack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "web",
-        "outputPath": "my-lib/dist",
-        "main": "my-lib/src/index.ts",
-        "tsConfig": "my-lib/tsconfig.lib.json",
-        "rspackConfig": "my-lib/rspack.config.js"
+        "outputPath": "libs/my-lib/dist",
+        "main": "libs/my-lib/src/index.ts",
+        "tsConfig": "libs/my-lib/tsconfig.lib.json",
+        "rspackConfig": "libs/my-lib/rspack.config.js"
       },
       "configurations": {
         "development": {

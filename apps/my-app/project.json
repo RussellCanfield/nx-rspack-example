@@ -2,7 +2,7 @@
   "name": "my-app",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "./my-app/src",
+  "sourceRoot": "./apps/my-app/src",
   "targets": {
     "build": {
       "executor": "@nrwl/rspack:rspack",
@@ -11,10 +11,10 @@
       "options": {
         "target": "web",
         "outputPath": "dist/my-app",
-        "main": "my-app/src/main.tsx",
-        "tsConfig": "my-app/tsconfig.app.json",
-        "rspackConfig": "my-app/rspack.config.js",
-        "assets": ["my-app/src/favicon.ico", "my-app/src/assets"]
+        "main": "apps/my-app/src/main.tsx",
+        "tsConfig": "apps/my-app/tsconfig.app.json",
+        "rspackConfig": "apps/my-app/rspack.config.js",
+        "assets": ["apps/my-app/src/favicon.ico", "apps/my-app/src/assets"]
       },
       "configurations": {
         "development": {
@@ -60,5 +60,6 @@
         "lintFilePatterns": ["./my-app/**/*.{ts,tsx,js,jsx}"]
       }
     }
-  }
+  },
+  "implicitDependencies": ["my-lib"]
 }
